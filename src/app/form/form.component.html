@@ -1,0 +1,51 @@
+<!--<form [formGroup]="form"></form>-->
+
+<form [formGroup]="form"> 
+
+    @if (tipoAcao === "I") {
+      <div style="width: 50%" >
+        <po-combo formControlName="codEstabel" [p-options]="listaEstabelecimentos" p-label="Estabelecimento"
+          p-icon="bi bi-pin-map" p-placeholder="Selecione o estabelecimento" p-clean="true">
+          <ng-template p-combo-option-template let-option>
+            <div class="po-row">
+              <po-icon class="po-sm-2 po-md-3 po-lg-1" p-size="sm" p-icon="bi bi-pin-map"></po-icon>
+              <div class="po-sm-10 po-md-9 po-lg-11">
+                <div class="po-font-text-large-bold">{{ option.label }}</div>
+                <div class="po-font-text-smaller">Filial: {{ option.codFilial }}</div>
+              </div>
+            </div>
+          </ng-template>
+        </po-combo>
+      </div>
+    }
+    @else {
+
+      <span class="po-font-title" style="font-weight: 900;">{{this.nomeEstabel}}</span>
+
+    }
+   
+    <div class="po-row">
+      <div style="width: 50%">
+        <po-divider p-label="Informações"></po-divider>
+      <div>
+    </div>
+    
+    <div class="po-row">    
+        <div style="width: 25%">
+            <po-decimal formControlName="leadTime" name="leadtime" p-label="Lead Time" p-value="form.controls.leadTime.value"> </po-decimal>
+        </div>
+    </div>
+
+    <br><br>
+    <po-divider p-label="Controle"></po-divider>
+    
+    <po-input class="po-md-6" name="Inclusao"  formControlName="Inclusao"  p-label="Inclusão"  p-disabled="true"></po-input>
+    <po-input class="po-md-6" name="Alteracao" formControlName="Alteracao" p-label="Alteração" p-disabled="true"></po-input>
+    
+
+    <po-divider p-label="."></po-divider>
+
+    <po-button p-label="Salvar"   (p-click)="onSalvar()"   p-kind="primary" style="margin-right: 5px;"></po-button>
+    <po-button p-label="Cancelar" (p-click)="onCancelar()" p-kind="secondary"></po-button>
+
+  </div>

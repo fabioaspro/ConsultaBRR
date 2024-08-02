@@ -1,0 +1,60 @@
+<br><br>
+<div class="campofiltros" >
+    <po-widget>
+      <form [formGroup]="form">
+        <div class="campofiltros" >
+          <po-input name="codEstabel" formControlName="codEstabel" class="po-lg-1" p-label="Estab"  p-mask="xxx">      </po-input>
+          <po-input name="codFilial"  formControlName="codFilial"  class="po-lg-1" p-required p-label="Filial" p-mask="xx">       </po-input>
+          <po-input name="numRR"      formControlName="numRR" class="po-lg-3" p-required p-label="Reparo" p-mask=">>>>>>9.9"></po-input>
+          <po-button p-icon="po-icon po-icon-search" [p-disabled]="!this.form.valid" p-label="Buscar" (p-click)="ChamaObterBRR()"></po-button>
+          
+          <!--<po-radio-group class="campofiltros"
+                          name="ret-filtro" 
+                          formControlName="ret-filtro" 
+                          [p-columns]=2 
+                          p-label="Tipo de Busca"
+                          [p-options]="[
+                            { label: 'Reparo', value: 1},
+                            { label: 'Item', value: 2 }
+                          ]"
+                          (p-change)="changeBusca($event)"
+                          >
+          </po-radio-group>-->
+          
+        </div>
+      </form>
+    </po-widget>
+  
+    <div class="po-md-4">
+      <po-widget>
+          <div class="campofiltrosc" >
+            <po-button p-icon="po-icon po-icon-pushcart"     p-label="CE0830"   (p-click)="AbrirTelaTOTVS('cep/ce0830.w')"></po-button>
+            <po-button p-icon="po-icon po-icon-pallet-full"  p-label="ESPP034"  (p-click)="AbrirTelaTOTVS('esp/espp034.w')"></po-button>
+            <po-button p-icon="po-icon po-icon-print"        p-label="Exportar" (p-click)="this.onExportarExcel()"> </po-button>
+            <!--  [p-loading]="loadExcel"-->
+          </div>
+      </po-widget>
+    </div>
+  </div>
+
+<po-widget>
+<div class="po-md-12">
+  <po-table [p-items]="lista" 
+            [p-columns]="colunas"
+            [p-striped]="true" 
+            [p-loading]="loadTela" 
+            p-sort="true"
+            [p-hide-table-search]="false" 
+            [p-hide-columns-manager]="true" 
+            p-container="true"
+            [p-literals]="customLiterals"
+            [p-height]="300"
+            /></div>
+
+<!--<div style="margin-left: 20px;">
+    <div>
+        <i class="bi bi-exclamation-circle" style="float:left">&nbsp;</i>
+        <po-info p-label="Os parâmetros são utilizados no programa de Cálculo do Banco de Reparos" style="display: block;"></po-info>
+    </div>
+</div>-->
+</po-widget>
