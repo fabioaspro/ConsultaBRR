@@ -7,6 +7,7 @@ import { ReactiveFormsModule, FormsModule, FormBuilder, FormGroup, UntypedFormBu
 import { PoModule, PoTableColumn, PoTableModule, PoButtonModule, PoMenuItem, PoMenuModule, PoModalModule, PoPageModule, PoToolbarModule, PoTableAction, PoModalAction, PoDialogService, PoNotificationService, PoFieldModule, PoDividerModule, PoTableLiterals,} from '@po-ui/ng-components';
 import { ServerTotvsService } from '../services/server-totvs.service';
 import { ExcelService } from '../services/excel-service.service';
+import { escape } from 'querystring';
 
 
 @Component({
@@ -59,8 +60,8 @@ export class ListComponent {
     codEstabel: ['', Validators.required],
     codFilial: ['', Validators.required],
     numRR: ['', Validators.required],
-    //itCodigo: ['', Validators.required],
-    tpBusca: ['', Validators.required],
+    itCodigo: [''],
+    tpBusca: [2, Validators.required],
   });
 
   //--- Actions
@@ -95,6 +96,13 @@ export class ListComponent {
   changeBusca(event: any) {
     
     this.form.controls['tpBusca'].setValue (event)
+   
+    if (this.form.controls['tpBusca'].value == 2) {
+      alert ('dois')
+    }
+    else {
+      alert('um')
+    }
     
   }
   ngOnInit(): void {
@@ -107,8 +115,7 @@ export class ListComponent {
     this.form.controls['codFilial'].setValue('07')
     this.form.controls['numRR'].setValue('1035600.0')
 
-    this.form.controls['tpBusca'].setValue ('1')
-    
+    this.form.controls['tpBusca'].setValue(1);
     //alert(this.form.controls['tpBusca'].value)
 
   }

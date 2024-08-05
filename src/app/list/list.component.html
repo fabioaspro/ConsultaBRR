@@ -8,18 +8,20 @@
           <po-input name="numRR"      formControlName="numRR" class="po-lg-3" p-required p-label="Reparo" p-mask=">>>>>>9.9"></po-input>
           <po-button p-icon="po-icon po-icon-search" [p-disabled]="!this.form.valid" p-label="Buscar" (p-click)="ChamaObterBRR()"></po-button>
           
-          <!--<po-radio-group class="campofiltros"
+          <po-input name="itCodigo"  formControlName="itCodigo"  class="po-lg-3" p-label="Item" p-mask="XX.XXX.XXXXX-XX" [hidden]="true">       </po-input>
+
+          <po-radio-group class="campofiltros"
                           name="ret-filtro" 
                           formControlName="ret-filtro" 
                           [p-columns]=2 
                           p-label="Tipo de Busca"
                           [p-options]="[
                             { label: 'Reparo', value: 1},
-                            { label: 'Item', value: 2 }
+                            { label: 'Item', value: 2}
                           ]"
                           (p-change)="changeBusca($event)"
                           >
-          </po-radio-group>-->
+          </po-radio-group>
           
         </div>
       </form>
