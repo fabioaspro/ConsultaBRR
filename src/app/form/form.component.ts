@@ -63,7 +63,7 @@ export class FormComponent {
 
   onSalvar() {
     if (!this.form.valid) {
-      this.srvNotification.error('Preencha todos os campos');
+      this.srvNotification.error('Preencha todos os campos obrigatórios');
       return
     }
 
