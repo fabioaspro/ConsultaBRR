@@ -1,8 +1,8 @@
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-//import { Workbook, Worksheet } from 'exceljs';
-//import * as saveAs from 'file-saver';
-//import * as fs from 'file-saver';
+import { Workbook, Worksheet } from 'exceljs';
+import saveAs from 'file-saver';
+import * as fs from 'file-saver';
 import { of, take } from 'rxjs';
 
 @Injectable({
@@ -34,10 +34,10 @@ export class ExcelService {
 
   public exportarParaExcel(
     reportHeading: string,
-    //reportSubHeading: string,
-    //headersArray: any[]=[],
-    //json: any[]=[],
-    //excelFileName: string,
+    reportSubHeading: string,
+    headersArray: any[]=[],
+    json: any[]=[],
+    excelFileName: string,
     sheetName: string,
 ) {
     const EXCEL_TYPE = 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet;charset=UTF-8';

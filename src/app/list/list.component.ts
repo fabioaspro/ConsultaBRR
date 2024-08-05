@@ -8,6 +8,7 @@ import { PoModule, PoTableColumn, PoTableModule, PoButtonModule, PoMenuItem, PoM
 import { ServerTotvsService } from '../services/server-totvs.service';
 import { ExcelService } from '../services/excel-service.service';
 
+
 @Component({
   selector: 'app-list',
   standalone: true,
@@ -34,7 +35,7 @@ export class ListComponent {
 
   private srvTotvs = inject(ServerTotvsService);
   private srvNotification = inject(PoNotificationService);
-  private srvExcel = inject(ExcelService)
+  private srvExcel = inject(ExcelService);
   private srvDialog = inject(PoDialogService);
   private router = inject(Router)
   private formConsulta = inject(FormBuilder);
@@ -131,7 +132,7 @@ export class ListComponent {
     //Chamar o servico
     this.srvTotvs.ObterBRR(paramsTela).subscribe({
       next: (response: any) => {
-        this.srvNotification.success('Dados listados com sucesso !')
+        this.srvNotification.success('Dados listados com sucesso !' + response)
         this.lista = response.items
         this.lista.sort(this.srvTotvs.ordenarCampos(['iNecess']))
         this.loadTela = false
@@ -164,11 +165,11 @@ export class ListComponent {
     this.loadExcel = true
 
     this.srvExcel.exportarParaExcel('RESUMO DE ' +
-                                    //titulo.toUpperCase(),
-                                    //subTitulo.toUpperCase(),
-                                    //this.colunasDetalhe,
-                                    //this.itemsDetalhe,
-                                    'Resumo',
+                                    "titulo.toUpperCase()",
+                                    "subTitulo.toUpperCase()",
+                                    this.colunas,
+                                    this.colunas,
+                                    'Lista_BRR',
                                     'Plan1')
      this.loadExcel = false;
   }
@@ -179,7 +180,7 @@ export class ListComponent {
     this.srvTotvs.Obter().subscribe({
       next: (response: any) => {
         if (response === null) return
-        this.lista = response.items
+        this.lista = response.items 
         this.loadTela = false
       },
       error: (e) => {
