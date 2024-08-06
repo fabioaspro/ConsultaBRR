@@ -38,7 +38,7 @@ export class ServerTotvsService {
       { property: 'Inclusao',    label: "Inclusão"},
       { property: 'Alteracao',   label: "Alteração"},*/
       
-      { property: 'iNecess',       label: "Neces"},
+      { property: 'iNecess',       label: "Neces", type: 'number', format: "1.2-2"},
       { property: 'codEstabel',    label: "Estab"},
       { property: 'codFilial',     label: "Filial"},
       { property: 'numRR',         label: "Reparo"},
@@ -46,12 +46,12 @@ export class ServerTotvsService {
       { property: 'Situacao',      label: "Sit"},
       { property: 'datT',          label: "DatT"},
       { property: 'datR',          label: "DatR"},
-      { property: 'dMinUltTri',    label: "dMinUltTri"},
+      { property: 'dMinUltTri',    label: "dMinUltTri", type: 'number', format: "1.2-2"},
       { property: 'iPrioridade',   label: "Pri"},
       { property: 'ltFilial',      label: "LTFilial"},
-      { property: 'rrDias',        label: "rrDias"},
+      { property: 'rrDias',        label: "rrDias", type: 'number', format: "1.2-2"},
       { property: 'datarecebe',    label: "DataRecebe"},
-      { property: 'rep-conc',      label: "Transito"},
+      { property: 'rep-conc',      label: "Transito", type: 'number', format: "1.2-2"},
       /*
       
       F

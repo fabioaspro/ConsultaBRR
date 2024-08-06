@@ -45,6 +45,11 @@ export class ListComponent {
   loadTela: boolean = false
   loadExcel:boolean = false
   tituloTela!:string
+  mudaCampos!:number | null
+  pesquisa!:string
+  nomeBotao: any;
+  lBotao:boolean = false
+
   //lista: any;
   tipoAcao:string=''
 
@@ -92,16 +97,29 @@ export class ListComponent {
   }
   formBuilder: any;
   nomeEstabel: string | undefined;
+  valorForm: any;
 
   changeBusca(event: any) {
     
     this.form.controls['tpBusca'].setValue (event)
    
-    if (this.form.controls['tpBusca'].value == 2) {
-      alert ('dois')
+    //alert (this.form.controls['tpBusca'].value)
+
+    this.mudaCampos = this.form.controls['tpBusca'].value
+
+    if (this.form.controls['tpBusca'].value == 2) { //Item
+      this.form.reset()
+      //Apenas para testar
+      this.form.controls['itCodigo'].setValue('85.101.00275-2B')
+      this.pesquisa = "ITEM: " + this.form.controls['itCodigo'].value
     }
     else {
-      alert('um')
+      this.form.reset()
+      //Apenas para testar
+      this.form.controls['codEstabel'].setValue('101')
+      this.form.controls['codFilial'].setValue('07')
+      this.form.controls['numRR'].setValue('1035600.0')
+      this.pesquisa = "REPARO: " + this.form.controls['codEstabel'].value + ' - '+ this.form.controls['codFilial'].value + ' - ' + this.form.controls['numRR'].value
     }
     
   }
@@ -109,73 +127,72 @@ export class ListComponent {
     
     //Colunas do grid
     this.colunas = this.srvTotvs.obterColunas()
-
-    //Apenas para testar
-    this.form.controls['codEstabel'].setValue('101')
-    this.form.controls['codFilial'].setValue('07')
-    this.form.controls['numRR'].setValue('1035600.0')
-
     this.form.controls['tpBusca'].setValue(1);
-    //alert(this.form.controls['tpBusca'].value)
-
+    this.mudaCampos = 1 //iniciar a variavel
+    this.pesquisa = "REPARO"
   }
 
-  /*this.srvTotvs.ObterBRR({codEstabel: params['id']}).subscribe({
-    next: (response: any) => {
-      this.form.patchValue(response.items[0])
-      this.form.controls['Alteracao'].setValue ("super - 02/08/2024")
-      this.nomeEstabel = response.items[0].nomeEstabel
-    },
-    error: (e) => {
-      //this.srvNotification.error('Ocorreu um erro na requisição')
-      return
-    },
-  })*/
-  
   ChamaObterBRR(){
     this.loadTela = true;
+    this.desabilitaForm()
     let paramsTela: any = { items: this.form.value }
     console.log(paramsTela)
+    if (this.form.controls['tpBusca'].value == 2) { //Item
+      this.pesquisa = "ITEM: " + this.form.controls['itCodigo'].value
+    }
+    else{
+      this.pesquisa = "REPARO: " + this.form.controls['codEstabel'].value + ' - '+ this.form.controls['codFilial'].value + ' - ' + this.form.controls['numRR'].value
+    }
     //Chamar o servico
     this.srvTotvs.ObterBRR(paramsTela).subscribe({
       next: (response: any) => {
-        this.srvNotification.success('Dados listados com sucesso !' + response)
+        this.srvNotification.success('Dados listados com sucesso !')
         this.lista = response.items
-        this.lista.sort(this.srvTotvs.ordenarCampos(['iNecess']))
+        this.lista.sort(this.srvTotvs.ordenarCampos(['iNecess','ltFilial']))
         this.loadTela = false
+        this.habilitaForm()
       },
       error: (e) => {
-        this.srvNotification.error('Ocorreu um erro ObterBRR: ' + e)
+        //this.srvNotification.error('Ocorreu um erro ObterBRR: ' + e)
         this.loadTela = false
+        this.habilitaForm()
       },
-    })
-    /*let params: any = { itens: this.form.value};
-    console.log(params)
-    this.srvTotvs.ObterBRR(params).subscribe({
-      next: (response: any) => {
-        if (response === null) return
-        this.lista = response.items
-        this.loadTela = false
-      },
-      error: (e) => {
-                    //this.srvNotification.error('Ocorreu um erro na requisição')
-                    this.srvNotification.error("Erro ao Obter BRR:" + e)
-                    this.loadTela=false},
-    });*/
-    
+    })    
   }
 
+  public habilitaForm(){
+
+    this.lBotao = false
+    this.form.controls['tpBusca'].enable()
+    
+    this.form.controls['codEstabel'].enable()
+    this.form.controls['codFilial'].enable()
+    this.form.controls['numRR'].enable()
+    this.form.controls['itCodigo'].enable()
+  }
+
+  public desabilitaForm(){
+
+    this.lBotao = true    
+    this.form.controls['tpBusca'].disable()
+    
+    this.form.controls['codEstabel'].disable()
+    this.form.controls['codFilial'].disable()
+    this.form.controls['numRR'].disable()
+    this.form.controls['itCodigo'].disable()
+  }
   //---------------------------------------------------------------- Exportar lista detalhe para excel
   public onExportarExcel(){
-    //let titulo = this.tituloDetalhe.split(':')[0]
-    //let subTitulo = this.tituloDetalhe.split(':')[1]
+    let titulo = "BANCO DE REPAROS" //this.tituloTela.split(':')[0]
+    let subTitulo = "CONSULTA DE PRIORIDADE" //this.tituloTela.split(':')[1]
     this.loadExcel = true
 
-    this.srvExcel.exportarParaExcel('RESUMO DE ' +
-                                    "titulo.toUpperCase()",
-                                    "subTitulo.toUpperCase()",
+    let valorForm: any = { valorForm: this.form.value }
+    
+    this.srvExcel.exportarParaExcel('CONSULTA DE ' + titulo.toUpperCase(),
+                                    subTitulo.toUpperCase(),
                                     this.colunas,
-                                    this.colunas,
+                                    this.lista,
                                     'Lista_BRR',
                                     'Plan1')
      this.loadExcel = false;
