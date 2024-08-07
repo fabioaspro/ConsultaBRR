@@ -42,6 +42,7 @@ export class ListComponent {
   private formConsulta = inject(FormBuilder);
 
   //Variaveis 
+  labelLoadTela:string = ''
   loadTela: boolean = false
   loadExcel:boolean = false
   tituloTela!:string
@@ -52,7 +53,7 @@ export class ListComponent {
 
   //lista: any;
   tipoAcao:string=''
-
+  
   //---Grid
   colunas!: PoTableColumn[]
   lista!: any[]
@@ -101,6 +102,7 @@ export class ListComponent {
 
   changeBusca(event: any) {
     
+    this.lista = []
     this.form.controls['tpBusca'].setValue (event)
    
     //alert (this.form.controls['tpBusca'].value)
@@ -109,17 +111,11 @@ export class ListComponent {
 
     if (this.form.controls['tpBusca'].value == 2) { //Item
       this.form.reset()
-      //Apenas para testar
-      this.form.controls['itCodigo'].setValue('85.101.00275-2B')
-      this.pesquisa = "ITEM: " + this.form.controls['itCodigo'].value
+      this.pesquisa = "ITEM " //+ this.form.controls['itCodigo'].value
     }
     else {
       this.form.reset()
-      //Apenas para testar
-      this.form.controls['codEstabel'].setValue('101')
-      this.form.controls['codFilial'].setValue('07')
-      this.form.controls['numRR'].setValue('1035600.0')
-      this.pesquisa = "REPARO: " + this.form.controls['codEstabel'].value + ' - '+ this.form.controls['codFilial'].value + ' - ' + this.form.controls['numRR'].value
+      this.pesquisa = "REPARO " //+ this.form.controls['codEstabel'].value + ' - '+ this.form.controls['codFilial'].value + ' - ' + this.form.controls['numRR'].value
     }
     
   }
@@ -132,16 +128,26 @@ export class ListComponent {
     this.pesquisa = "REPARO"
   }
 
+  DestacaPagar(){
+
+    alert('1')
+
+  }
+
   ChamaObterBRR(){
+    this.labelLoadTela = "Calculando Prioridade"
     this.loadTela = true;
     this.desabilitaForm()
     let paramsTela: any = { items: this.form.value }
     console.log(paramsTela)
-    if (this.form.controls['tpBusca'].value == 2) { //Item
-      this.pesquisa = "ITEM: " + this.form.controls['itCodigo'].value
+    this.lista = []
+
+     
+    if (this.mudaCampos == 2) { //Item
+      this.pesquisa = "ITEM " //+ this.form.controls['itCodigo'].value
     }
     else{
-      this.pesquisa = "REPARO: " + this.form.controls['codEstabel'].value + ' - '+ this.form.controls['codFilial'].value + ' - ' + this.form.controls['numRR'].value
+      this.pesquisa = "REPARO " // + this.form.controls['codEstabel'].value + ' - '+ this.form.controls['codFilial'].value + ' - ' + this.form.controls['numRR'].value
     }
     //Chamar o servico
     this.srvTotvs.ObterBRR(paramsTela).subscribe({

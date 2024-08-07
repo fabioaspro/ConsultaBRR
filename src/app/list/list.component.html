@@ -1,8 +1,66 @@
-<br><br>
-<div class="campofiltros" >
+<div class="cabec" >
+  <div class="tipoBusca">
+      <form [formGroup]="form">
+        <po-radio-group style="min-width: 200px;"
+                        name="tpBusca" 
+                        formControlName="tpBusca" 
+                        [p-columns]=2 
+                        p-label="Tipo de Busca"
+                        [p-options]="[
+                          { label: 'Reparo', value: 1},
+                          { label: 'Item', value: 2}
+                        ]"
+                        (p-change)="changeBusca($event)"
+                        >
+                    </po-radio-group>
+      </form>
+  </div>
+  <div class="selecao">
+      <form [formGroup]="form">
+        <div class="campofiltros" >
+          
+          <po-input name="codEstabel" p-auto-focus="true" formControlName="codEstabel" style="width: 50px;" p-label="Estab"  p-mask="xxx">      </po-input>
+
+          @if (this.mudaCampos === 1) {            
+            <po-input name="codFilial"  formControlName="codFilial"  style="width: 50px;" p-label="Filial" p-mask="xx">       </po-input>
+            <po-input name="numRR"      formControlName="numRR" style="width: 120px;" p-label="Reparo" p-mask=">>>>>>9.9"></po-input>
+          }
+          @else {
+            <po-input name="itCodigo" formControlName="itCodigo"  style="width: 200px;" p-label="Item" p-mask="XX.XXX.XXXXX-XX">       </po-input>
+          }
+
+          <po-button p-tooltip="Efetuar Busca de Prioridade" name='btBusca' [p-disabled]="lBotao" style="margin-right: 50px" p-icon="po-icon po-icon-search" p-kind="primary"  p-label="Buscar" (p-click)="ChamaObterBRR()"></po-button>
+        </div>
+      </form>
+  </div>
+  <div class="campofiltrosc">
+          <po-button p-tooltip="Consulta de Saldo Item Data"           p-icon="po-icon po-icon-pushcart"     p-label="CE0830"   (p-click)="AbrirTelaTOTVS('cep/ce0830.w')" p-kind="primary" ></po-button>
+          <po-button p-tooltip="Consulta Analise Critica Planejamento" p-icon="po-icon po-icon-pallet-full"  p-label="ESPP034"  (p-click)="AbrirTelaTOTVS('esp/espp034.w')" p-kind="primary"></po-button>
+          <po-button p-tooltip="Baixar Dados no Excel"                 p-icon="bi bi-download"               p-label="Baixar" (p-click)="this.onExportarExcel()" p-kind="primary"> </po-button>
+  </div>
+</div>
+
+<div class="grid">
+    <po-loading-overlay *ngIf="loadTela===true" [p-text]="labelLoadTela" [p-screen-lock]="true"></po-loading-overlay>
+    <p style="font-size: 20px; font-weight: bold"><po-divider p-label="Busca efetuada por {{this.pesquisa}}"></po-divider></p>
+    <po-table [p-items]="lista" 
+              [p-columns]="colunas"
+              [p-striped]="true" 
+              p-sort="true"
+              [p-hide-table-search]="true" 
+              [p-hide-columns-manager]="true" 
+              p-container="true"
+              [p-literals]="customLiterals"
+              [p-height]="290"/>
+    <p style="font-size: 10px" >versão 1.00.000</p>
+</div>
+
+<!--FAS
+<div class="campofiltros">
   <po-widget>
     <form [formGroup]="form">
-      <po-radio-group class="campofiltros"
+      <po-radio-group style="min-width: 200px;"
+                      class="campofiltros"
                       name="tpBusca" 
                       formControlName="tpBusca" 
                       [p-columns]=2 
@@ -18,14 +76,15 @@
   </po-widget>
   <po-widget>
     <form [formGroup]="form">
-      <div class="campofiltros" >
+      <div class="campofiltros">
         @if (this.mudaCampos === 1) {
           <po-input name="codEstabel" p-auto-focus="true" formControlName="codEstabel" class="po-lg-1" p-label="Estab"  p-mask="xxx">      </po-input>
           <po-input name="codFilial"  formControlName="codFilial"  class="po-lg-1" p-label="Filial" p-mask="xx">       </po-input>
           <po-input name="numRR"      formControlName="numRR" class="po-lg-3" p-label="Reparo" p-mask=">>>>>>9.9"></po-input>
         }
         @else {
-          <po-input name="itCodigo"  p-auto-focus="true" formControlName="itCodigo"  class="po-lg-6" p-label="Item" p-mask="XX.XXX.XXXXX-XX">       </po-input>
+          <po-input name="codEstabel" p-auto-focus="true" formControlName="codEstabel" class="po-lg-2" p-label="Estab"  p-mask="xxx">      </po-input>
+          <po-input name="itCodigo"   formControlName="itCodigo"  class="po-lg-6" p-label="Item" p-mask="XX.XXX.XXXXX-XX">       </po-input>
         }
 
         <po-button name='btBusca' [p-disabled]="lBotao" style="margin-right: 50px" p-icon="po-icon po-icon-search"  p-label="Buscar" (p-click)="ChamaObterBRR()"></po-button>
@@ -39,7 +98,6 @@
           <po-button p-icon="po-icon po-icon-pushcart"     p-label="CE0830"   (p-click)="AbrirTelaTOTVS('cep/ce0830.w')"></po-button>
           <po-button p-icon="po-icon po-icon-pallet-full"  p-label="ESPP034"  (p-click)="AbrirTelaTOTVS('esp/espp034.w')"></po-button>
           <po-button p-icon="po-icon po-icon-print"        p-label="Exportar" (p-click)="this.onExportarExcel()"> </po-button>
-          <!--  [p-loading]="loadExcel"-->
         </div>
     </po-widget>
   </div>
@@ -48,7 +106,8 @@
 <po-widget> 
   
   <div class="po-md-12">
-    <po-divider p-label="Busca efetuada por  {{this.pesquisa}}"></po-divider>
+    <p style="font-size: 20px; font-weight: bold">Busca efetuada por  {{this.pesquisa}}</p>
+    <po-divider p-label=" " ></po-divider>
     <po-table [p-items]="lista" 
               [p-columns]="colunas"
               [p-striped]="true" 
@@ -59,6 +118,8 @@
               p-container="true"
               [p-literals]="customLiterals"
               [p-height]="300"
+              
               />              
   </div>
 </po-widget>
+-->
