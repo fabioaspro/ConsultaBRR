@@ -31,7 +31,7 @@ export class AppComponent {
   private srvTotvs = inject(ServerTotvsService);
   private formBuilder = inject(FormBuilder);
   readonly menus: Array<PoMenuItem> = [
-    { label: 'LeadTime', action: this.onClick.bind(this) },
+    { label: 'ConsultaBRR', action: this.onClick.bind(this) },
   ];
 
   //Variaveis 

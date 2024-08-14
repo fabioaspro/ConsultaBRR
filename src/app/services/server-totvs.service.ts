@@ -41,23 +41,21 @@ export class ServerTotvsService {
       { property: 'iNecess',       label: "Neces", type: 'number', format: "1.2-2"},
       { property: 'codEstabel',    label: "Estab"},
       { property: 'codFilial',     label: "Fil"},
-      { property: 'numRR',         label: "Reparo"},
+      { property: 'nomeFilial',    label: "Nome"},
+      //{ property: 'numRR',         label: "Reparo"},
       { property: 'itCodigo',      label: "Item"},
-      { property: 'Situacao',      label: "Sit"},
+      //{ property: 'Situacao',      label: "Sit"},
       { property: 'datT',          label: "DatT"},
       { property: 'datR',          label: "DatR"},
+      { property: 'repConc',       label: "Transito"},
+      { property: 'datF',          label: "DatR + Transito"},
       { property: 'dMinUltTri',    label: "Min", type: 'number', format: "1.2-2"},
+      { property: 'rrDias',        label: "rrDias", type: 'number', format: "1.2-2"},
+      //{ property: 'dataRecebe',    label: "DataRecebe", type:'date', format: "dd/MM/yyyy"},
+      
       { property: 'iPrioridade',   label: "Pri"},
       { property: 'ltFilial',      label: "LTFil"},
-      { property: 'rrDias',        label: "rrDias", type: 'number', format: "1.2-2"},
-      { property: 'dataRecebe',    label: "DataRecebe", type:'date', format: "dd/MM/yyyy"},
-      { property: 'repConc',       label: "Transito", type: 'number', format: "1.2-2"},
-      /*
-      
-      F
-      FIELDS rep-conc         AS DECI                      SERIALIZE-NAME "repConc"
-      */
-
+    
     ];
   }
 
