@@ -5,5 +5,7 @@ export const routes: Routes = [
     {path: '', redirectTo: '/list', pathMatch: 'full'},
     {path:'list', loadComponent:()=> import('../app/list/list.component').then(c=>c.ListComponent)},
     {path:'form/:id', loadComponent:()=> import('../app/form/form.component').then(c=>c.FormComponent)},
+    {path:'emergenc', loadComponent:()=> import('../app/emergenc/emergenc.component').then(c=>c.EmergencComponent)},
 
 ];
+

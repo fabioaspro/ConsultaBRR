@@ -28,7 +28,7 @@ export class ServerTotvsService {
     return this.http.get('/totvs-menu/rest/exec', { params, headers: headersTotvs }).pipe(take(1));
   }
   
-  //------------ Colunas Grid Saldo Terceiro
+  //------------ Colunas Grid Prioridade
   obterColunas(): Array<PoTableColumn> {
     return [
       /*
@@ -59,6 +59,19 @@ export class ServerTotvsService {
     ];
   }
 
+  //------------ Colunas Grid Prioridade
+  obterColunasEmergencial(): Array<PoTableColumn> {
+    return [         
+      { property: 'codEstabel',    label: "Estab"},
+      { property: 'codFilial',     label: "Fil Emerg"},
+      { property: 'itCodigo',      label: "Item"},
+      { property: 'qtdEmerg',      label: "Qtd.Emergencial"},
+      { property: 'qtdPend',       label: "Qtd.Pendente"},
+      { property: 'Obs',           label: "Observação"},
+      { property: 'Inclusao',      label: "Inclusão"},
+      { property: 'Ativo',         label: "Ativo"},
+    ];
+  }
   //Retorno transformado no formato {label: xxx, value: yyyy}
   public ObterEstabelecimentos(params?: any){
     return this.http.get<any>(`${this._url}/ObterEstab`, {params: params, headers:headersTotvs})
@@ -69,6 +82,9 @@ export class ServerTotvsService {
                   take(1));
   }
 
+  public ObterEmergencial(params?: any){
+    return this.http.post(`${this._url}/ObterEmergencial`, params, {headers:headersTotvs}).pipe(take(1))
+  }
   //---------------------- Obter Lista Completa
   public ObterBRR(params?: any){
     return this.http.post(`${this._url}/ObterBRR`, params, {headers:headersTotvs}).pipe(take(1))
@@ -91,7 +107,7 @@ export class ServerTotvsService {
 
   //---------------------- Deletar registro
   public Deletar(params?: any){
-    return this.http.get(`${this._url}/DeletarLT`, {params:params, headers:headersTotvs})
+    return this.http.get(`${this._url}/DeletarEmergencial`, {params:params, headers:headersTotvs})
                     .pipe(take(1));
   }
   

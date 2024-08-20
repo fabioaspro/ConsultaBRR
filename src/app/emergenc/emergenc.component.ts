@@ -29,17 +29,17 @@ import { escape } from 'querystring';
     PoPageModule,
     HttpClientModule,
   ],
-  templateUrl: './list.component.html',
-  styleUrl: './list.component.css'
+  templateUrl: './emergenc.component.html',
+  styleUrl: './emergenc.component.css'
 })
-export class ListComponent {
+export class EmergencComponent {
 
   private srvTotvs = inject(ServerTotvsService);
   private srvNotification = inject(PoNotificationService);
   private srvExcel = inject(ExcelService);
   private srvDialog = inject(PoDialogService);
   private router = inject(Router)
-  private formConsulta = inject(FormBuilder);
+  private formEmergencial = inject(FormBuilder);
 
   //Variaveis 
   labelLoadTela:string = ''
@@ -61,30 +61,21 @@ export class ListComponent {
     noData: 'Infome os filtros para Buscar os Dados'
   };
   
-  //Formulario
-  public form = this.formConsulta.group({
-    codEstabel: ['', Validators.required],
-    codFilial: ['', Validators.required],
-    numRR: ['', Validators.required],
-    itCodigo: [''],
-    tpBusca: [2, Validators.required],
-  });
-
   //--- Actions
-  readonly opcoes: PoTableAction[] = [
-    {
-      label: 'Editar',
-      icon: 'bi bi-pencil-square',
-      action: this.onEditar.bind(this),
-    },
+  readonly opcoesGrid: PoTableAction[] = [
     {
       separator:true,
-      label: 'Deletar',
+      label: '',
       icon: 'bi bi-trash',
       action: this.onDeletar.bind(this),
       type:'danger'
     }];
 
+  //Formulario
+  public form = this.formEmergencial.group({
+    itCodigoini: [''],
+    itCodigofim: [''],
+  });
   
   readonly acaoSalvar: PoModalAction = {
     label: 'Salvar',
@@ -100,61 +91,36 @@ export class ListComponent {
   nomeEstabel: string | undefined;
   valorForm: any;
 
-  changeBusca(event: any) {
-    
-    this.lista = []
-    this.form.controls['tpBusca'].setValue (event)
-   
-    //alert (this.form.controls['tpBusca'].value)
-
-    this.mudaCampos = this.form.controls['tpBusca'].value
-
-    if (this.form.controls['tpBusca'].value == 1) { //Item
-      this.form.reset()
-      this.pesquisa = "ITEM " //+ this.form.controls['itCodigo'].value
-    }
-    else {
-      this.form.reset()
-      this.pesquisa = "REPARO " //+ this.form.controls['codEstabel'].value + ' - '+ this.form.controls['codFilial'].value + ' - ' + this.form.controls['numRR'].value
-    }
-    
-  }
   ngOnInit(): void {
     
+    this.form.controls['itCodigofim'].setValue("ZZZZZZZZZZZZZZZZ")
     //Colunas do grid
-    this.colunas = this.srvTotvs.obterColunas()
-    this.form.controls['tpBusca'].setValue(1);
+    this.colunas = this.srvTotvs.obterColunasEmergencial()
     this.mudaCampos = 1 //iniciar a variavel
     this.pesquisa = "ITEM"
+    
   }
 
-  ConsultaEmergencial(){
+  ConsultaPrioridade(){
 
-    this.router.navigate(['emergenc'])
+    this.router.navigate(['list'])
 
   }
 
-  ChamaObterBRR(){
-    this.labelLoadTela = "Calculando Prioridade"
+  ChamaObterEmergencial(){
+    this.labelLoadTela = "Carregando Emergenciais cadastradas"
     this.loadTela = true;
     this.desabilitaForm()
     let paramsTela: any = { items: this.form.value }
     console.log(paramsTela)
-    this.lista = []
-
-     
-    if (this.mudaCampos == 1) { //Item
-      this.pesquisa = "ITEM " //+ this.form.controls['itCodigo'].value
-    }
-    else{
-      this.pesquisa = "REPARO " // + this.form.controls['codEstabel'].value + ' - '+ this.form.controls['codFilial'].value + ' - ' + this.form.controls['numRR'].value
-    }
+    this.lista = []   
+    
     //Chamar o servico
-    this.srvTotvs.ObterBRR(paramsTela).subscribe({
+    this.srvTotvs.ObterEmergencial(paramsTela).subscribe({
       next: (response: any) => {
         this.srvNotification.success('Dados listados com sucesso !')
         this.lista = response.items
-        this.lista.sort(this.srvTotvs.ordenarCampos(['iNecess','ltFilial']))
+        this.lista.sort(this.srvTotvs.ordenarCampos(['Inclusao']))
         this.loadTela = false
         this.habilitaForm()
       },
@@ -166,31 +132,21 @@ export class ListComponent {
     })    
   }
 
-  public habilitaForm(){
-
+  public habilitaForm(){    
     this.lBotao = false
-    this.form.controls['tpBusca'].enable()
-    
-    this.form.controls['codEstabel'].enable()
-    this.form.controls['codFilial'].enable()
-    this.form.controls['numRR'].enable()
-    this.form.controls['itCodigo'].enable()
+    this.form.controls['itCodigofim'].enable()
+    this.form.controls['itCodigoini'].enable()
   }
 
   public desabilitaForm(){
-
     this.lBotao = true    
-    this.form.controls['tpBusca'].disable()
-    
-    this.form.controls['codEstabel'].disable()
-    this.form.controls['codFilial'].disable()
-    this.form.controls['numRR'].disable()
-    this.form.controls['itCodigo'].disable()
+    this.form.controls['itCodigofim'].disable()
+    this.form.controls['itCodigoini'].disable()
   }
   //---------------------------------------------------------------- Exportar lista detalhe para excel
   public onExportarExcel(){
     let titulo = "BANCO DE REPAROS" //this.tituloTela.split(':')[0]
-    let subTitulo = "CONSULTA DE PRIORIDADE" //this.tituloTela.split(':')[1]
+    let subTitulo = "CONSULTA DE EMERGENCIAL" //this.tituloTela.split(':')[1]
     this.loadExcel = true
 
     let valorForm: any = { valorForm: this.form.value }
@@ -199,7 +155,7 @@ export class ListComponent {
                                     subTitulo.toUpperCase(),
                                     this.colunas,
                                     this.lista,
-                                    'Lista_BRR',
+                                    'Lista_EMERG',
                                     'Plan1')
      this.loadExcel = false;
   }
@@ -214,7 +170,6 @@ export class ListComponent {
         this.loadTela = false
       },
       error: (e) => {
-                    //this.srvNotification.error('Ocorreu um erro na requisição')
                     this.srvNotification.error("Erro ao chamar Obter Lista:" + e)
                     this.loadTela=false},
     });
@@ -241,15 +196,6 @@ export class ListComponent {
     
   }
 
-  //---Editar registro
-  onEditar(obj: any | null) {    
-
-    //Criar um registro novo passando 0 o ID
-    
-    this.router.navigate(['form/' + obj.codEstabel ]) 
-
-  }
-
   //---Deletar registro
   onDeletar(obj: any | null) {
     let paramTela:any={codEstabel:obj.codEstabel}
@@ -264,7 +210,10 @@ export class ListComponent {
             this.srvNotification.success('Registro eliminado com sucesso')
             this.listar()
           },
-         // error: (e) => this.srvNotification.error('Ocorreu um erro na requisição'),
+          error: (e) => {
+            this.loadTela = false
+            this.srvNotification.error('Ocorreu um erro na requisição, o registro não foi eliminado')
+          }
         })
       },
       cancel: () => this.srvNotification.error("Cancelada pelo usuário")

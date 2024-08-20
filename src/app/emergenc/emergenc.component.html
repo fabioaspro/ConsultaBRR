@@ -1,0 +1,36 @@
+<div class="cabec" >
+    
+    <div class="selecao">
+        <form [formGroup]="form">
+          <div class="campofiltros" >
+            
+            <po-input name="itCodigoini" formControlName="itCodigoini"  style="width: 200px;" p-label="Item de"  p-mask="XX.XXX.XXXXX-XX">       </po-input>
+            <po-input name="itCodigofim" formControlName="itCodigofim"  style="width: 200px;" p-label="Item até" p-mask="XX.XXX.XXXXX-XX">       </po-input>
+           
+  
+            <po-button p-tooltip="Efetuar Busca de Emergencial" name='btBusca' [p-disabled]="lBotao" style="margin-right: 50px" p-icon="po-icon po-icon-search" p-kind="primary"  p-label="Buscar" (p-click)="ChamaObterEmergencial()"></po-button>
+          </div>
+        </form>
+    </div>
+    <div class="campofiltrosc">
+            <po-button p-tooltip="Consulta Prioridade"                   p-icon="po-icon po-icon-pallet-full"  p-label="Consulta Prioridade"  (p-click)="ConsultaPrioridade()" p-danger="true"></po-button>
+            <po-button p-tooltip="Consulta de Saldo Item Data"           p-icon="po-icon po-icon-pushcart"     p-label="CE0830"   (p-click)="AbrirTelaTOTVS('cep/ce0830.w')" p-kind="primary" ></po-button>
+            <po-button p-tooltip="Consulta Analise Critica Planejamento" p-icon="po-icon po-icon-pallet-full"  p-label="ESPP034"  (p-click)="AbrirTelaTOTVS('esp/espp034.w')" p-kind="primary"></po-button>
+            <po-button p-tooltip="Baixar Dados no Excel"                 p-icon="bi bi-download"               p-label="Baixar" (p-click)="this.onExportarExcel()" p-kind="primary"> </po-button>
+    </div>
+  </div>
+  
+  <div class="grid">
+      <po-loading-overlay *ngIf="loadTela===true" [p-text]="labelLoadTela" [p-screen-lock]="true"></po-loading-overlay>
+      <p style="font-size: 20px; font-weight: bold"><po-divider p-label="Consulta de Emergencial efetuada por {{this.pesquisa}}"></po-divider></p>
+      <po-table [p-items]="lista" 
+                [p-columns]="colunas"
+                [p-striped]="true" 
+                p-sort="true"
+                [p-hide-table-search]="true" 
+                [p-hide-columns-manager]="true" 
+                p-container="true"
+                [p-literals]="customLiterals"
+                [p-height]="290"/>
+      <p style="font-size: 10px" >versão 1.00.000</p>
+  </div>
