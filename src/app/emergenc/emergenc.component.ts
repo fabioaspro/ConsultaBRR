@@ -47,6 +47,7 @@ export class EmergencComponent {
   loadExcel:boolean = false
   tituloTela!:string
   mudaCampos!:number | null
+  registros!: any[];
   pesquisa!:string
   nomeBotao: any;
   lBotao:boolean = false
@@ -61,6 +62,31 @@ export class EmergencComponent {
     noData: 'Infome os filtros para Buscar os Dados'
   };
   
+  /*
+  changeBuscaEmerg(event: any) {
+    
+    this.lista = []
+    this.form.controls['tpBusca'].setValue (event)
+   
+    //alert (this.form.controls['tpBusca'].value)
+
+    this.mudaCampos = this.form.controls['tpBusca'].value
+
+    if (this.form.controls['tpBusca'].value == 1) { //Ambos
+      this.form.reset()
+      this.pesquisa = "ATIVOS E INATIVOS" //+ this.form.controls['itCodigo'].value
+    }
+    else if (this.form.controls['tpBusca'].value == 2) { //Sim
+      this.form.reset()
+      this.pesquisa = "ATIVOS" //+ this.form.controls['itCodigo'].value
+    }
+    else { //Nao
+      this.form.reset()
+      this.pesquisa = "INATIVOS" //+ this.form.controls['codEstabel'].value + ' - '+ this.form.controls['codFilial'].value + ' - ' + this.form.controls['numRR'].value
+    }
+    
+  }
+  */
   //--- Actions
   readonly opcoesGrid: PoTableAction[] = [
     {
@@ -75,6 +101,7 @@ export class EmergencComponent {
   public form = this.formEmergencial.group({
     itCodigoini: [''],
     itCodigofim: [''],
+    //tpBusca: [1, Validators.required],
   });
   
   readonly acaoSalvar: PoModalAction = {
@@ -97,7 +124,7 @@ export class EmergencComponent {
     //Colunas do grid
     this.colunas = this.srvTotvs.obterColunasEmergencial()
     this.mudaCampos = 1 //iniciar a variavel
-    this.pesquisa = "ITEM"
+    this.pesquisa = "ATIVOS E INATIVOS"
     
   }
 
@@ -107,8 +134,20 @@ export class EmergencComponent {
 
   }
 
+  private totalLabelAtivos() {
+
+    let colunaSituacao = this.colunas.findIndex(col => col.property === 'Ativo')   //nome do campo
+    let labelsSituacao = this.colunas[colunaSituacao].subtitles as any[]
+
+    labelsSituacao.forEach(itens => {
+      //item.label = item.label + ' (' + this.registros.filter(data => data.cSituacao === item.value).length + ')'
+      itens.label = itens.label.split('(')[0] + ' (' + this.lista.filter(data => data.Ativo === itens.value).length + ')'
+    })
+
+  }
+
   ChamaObterEmergencial(){
-    this.labelLoadTela = "Carregando Emergenciais cadastradas"
+    this.labelLoadTela = "Carregando Emergenciais"
     this.loadTela = true;
     this.desabilitaForm()
     let paramsTela: any = { items: this.form.value }
@@ -118,11 +157,15 @@ export class EmergencComponent {
     //Chamar o servico
     this.srvTotvs.ObterEmergencial(paramsTela).subscribe({
       next: (response: any) => {
+        
         this.srvNotification.success('Dados listados com sucesso !')
         this.lista = response.items
-        this.lista.sort(this.srvTotvs.ordenarCampos(['Inclusao']))
         this.loadTela = false
+        this.totalLabelAtivos()
+        this.lista.sort(this.srvTotvs.ordenarCampos(['Inclusao']))
+        
         this.habilitaForm()
+       
       },
       error: (e) => {
         //this.srvNotification.error('Ocorreu um erro ObterBRR: ' + e)

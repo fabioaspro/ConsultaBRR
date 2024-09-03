@@ -70,6 +70,8 @@ export class ListComponent {
     tpBusca: [2, Validators.required],
   });
 
+  
+
   //--- Actions
   readonly opcoes: PoTableAction[] = [
     {
@@ -154,7 +156,8 @@ export class ListComponent {
       next: (response: any) => {
         this.srvNotification.success('Dados listados com sucesso !')
         this.lista = response.items
-        this.lista.sort(this.srvTotvs.ordenarCampos(['iNecess','ltFilial']))
+        this.lista.sort(this.srvTotvs.ordenarCampos(['iOrdem']))
+        
         this.loadTela = false
         this.habilitaForm()
       },
@@ -164,7 +167,7 @@ export class ListComponent {
         this.habilitaForm()
       },
     })    
-  }
+  } 
 
   public habilitaForm(){
 

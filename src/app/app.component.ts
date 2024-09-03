@@ -53,7 +53,7 @@ export class AppComponent {
   ngOnInit(): void {
     
     //--- Titulo Tela
-    //this.srvTotvs.EmitirParametros({estabInfo:'', tecInfo:'', processoInfo:'', tituloTela: 'HTMLA41 - PARÂMETROS DA FILIAL', dashboard: false})
+    //this.srvTotvs.EmitirParametros({estabInfo:'', tecInfo:'', processoInfo:'', tituloTela: 'HTMLA41 - PARÂMETROS DA FILIAL', ard: false})
 
     //Colunas do grid
     this.colunas = this.srvTotvs.obterColunas()

@@ -37,7 +37,7 @@ export class ServerTotvsService {
       { property: 'leadTime',    label: "Lead Time" },
       { property: 'Inclusao',    label: "Inclusão"},
       { property: 'Alteracao',   label: "Alteração"},*/
-      
+      { property: 'iOrdem',        label: "Ordem", type: 'number', format: "1.0-0", visible: false},
       { property: 'iNecess',       label: "Neces", type: 'number', format: "1.2-2"},
       { property: 'codEstabel',    label: "Estab"},
       { property: 'codFilial',     label: "Fil"},
@@ -52,7 +52,6 @@ export class ServerTotvsService {
       { property: 'dMinUltTri',    label: "Min", type: 'number', format: "1.2-2"},
       { property: 'rrDias',        label: "rrDias", type: 'number', format: "1.2-2"},
       //{ property: 'dataRecebe',    label: "DataRecebe", type:'date', format: "dd/MM/yyyy"},
-      
       { property: 'iPrioridade',   label: "Pri"},
       { property: 'ltFilial',      label: "LTFil"},
     
@@ -62,14 +61,18 @@ export class ServerTotvsService {
   //------------ Colunas Grid Prioridade
   obterColunasEmergencial(): Array<PoTableColumn> {
     return [         
+      { property: 'Ativo', label: 'Ativo', type: 'subtitle',
+        subtitles: [
+          { value: 'Sim', color: 'color-10', label: '', content: 'S'},
+          { value: 'Não', color: 'color-07', label: '', content: 'N'},
+        ]},
       { property: 'codEstabel',    label: "Estab"},
       { property: 'codFilial',     label: "Fil Emerg"},
-      { property: 'itCodigo',      label: "Item"},
-      { property: 'qtdEmerg',      label: "Qtd.Emergencial"},
-      { property: 'qtdPend',       label: "Qtd.Pendente"},
+      { property: 'itCodigo',      label: "Item", width: '300px' },
+      { property: 'qtdEmerg',      label: "Qtd.Emerg."},
+      { property: 'qtdPend',       label: "Qtd.Pend."},
       { property: 'Obs',           label: "Observação"},
-      { property: 'Inclusao',      label: "Inclusão"},
-      { property: 'Ativo',         label: "Ativo"},
+      { property: 'Inclusao',      label: "Inclusão"},      
     ];
   }
   //Retorno transformado no formato {label: xxx, value: yyyy}
@@ -81,7 +84,7 @@ export class ServerTotvsService {
                   ///tap(data => {console.log("Data Transformada pelo Map =>", data)}),
                   take(1));
   }
-
+  
   public ObterEmergencial(params?: any){
     return this.http.post(`${this._url}/ObterEmergencial`, params, {headers:headersTotvs}).pipe(take(1))
   }
