@@ -50,6 +50,7 @@ export class ListComponent {
   pesquisa!:string
   nomeBotao: any;
   lBotao:boolean = false
+  alturaGrid:number=window.innerHeight - 295
 
   //lista: any;
   tipoAcao:string=''
