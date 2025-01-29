@@ -1,10 +1,10 @@
 import { CommonModule } from '@angular/common';
 import { HttpClientModule } from '@angular/common/http';
-import { ChangeDetectorRef, Component, inject, OnInit, ViewChild, } from '@angular/core';
+import { AfterViewInit, ChangeDetectorRef, Component, inject, OnInit, ViewChild, } from '@angular/core';
 import { RouterOutlet, Router } from '@angular/router';
 import { Subscription } from 'rxjs';
 import { ReactiveFormsModule, FormsModule, FormBuilder, FormGroup, UntypedFormBuilder, UntypedFormGroup, Validators} from '@angular/forms';
-import { PoModule, PoTableColumn, PoTableModule, PoButtonModule, PoMenuItem, PoMenuModule, PoModalModule, PoPageModule, PoToolbarModule, PoTableAction, PoModalAction, PoDialogService, PoNotificationService, PoFieldModule, PoDividerModule, PoTableLiterals,} from '@po-ui/ng-components';
+import { PoModule, PoTableColumn, PoTableModule, PoButtonModule, PoMenuItem, PoMenuModule, PoModalModule, PoPageModule, PoToolbarModule, PoTableAction, PoModalAction, PoDialogService, PoNotificationService, PoFieldModule, PoDividerModule, PoTableLiterals, PoTableComponent,} from '@po-ui/ng-components';
 import { ServerTotvsService } from '../services/server-totvs.service';
 import { ExcelService } from '../services/excel-service.service';
 import { escape } from 'querystring';
@@ -13,9 +13,8 @@ import { escape } from 'querystring';
 @Component({
   selector: 'app-list',
   standalone: true,
-  imports: [
+  imports: [    
     CommonModule,
-    RouterOutlet,
     ReactiveFormsModule,
     FormsModule,
     PoModalModule,
@@ -32,7 +31,8 @@ import { escape } from 'querystring';
   templateUrl: './list.component.html',
   styleUrl: './list.component.css'
 })
-export class ListComponent {
+
+export class  ListComponent {
 
   private srvTotvs = inject(ServerTotvsService);
   private srvNotification = inject(PoNotificationService);
@@ -41,6 +41,8 @@ export class ListComponent {
   private router = inject(Router)
   private formConsulta = inject(FormBuilder);
 
+  
+  
   //Variaveis 
   labelLoadTela:string = ''
   loadTela: boolean = false
@@ -54,7 +56,7 @@ export class ListComponent {
 
   //lista: any;
   tipoAcao:string=''
-  
+  @ViewChild('poTable') poTable!: PoTableComponent;
   //---Grid
   colunas!: PoTableColumn[]
   lista!: any[]
@@ -137,6 +139,17 @@ export class ListComponent {
 
   }
 
+  // Método para selecionar programaticamente uma linha
+  selecionarLinha(id: number) {
+    const item = this.lista.find(i => i.ltFilial === id); // Localiza o item pelo ID
+      if (item) {
+        this.poTable.selectRowItem(item); // Seleciona o item na tabela
+      }
+      else {
+        alert ("error")
+      }
+    }
+    
   ChamaObterBRR(){
     this.labelLoadTela = "Calculando Prioridade"
     this.loadTela = true;

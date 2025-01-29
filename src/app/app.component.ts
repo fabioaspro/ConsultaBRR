@@ -4,7 +4,7 @@ import { ChangeDetectorRef, Component, inject, OnInit, ViewChild, } from '@angul
 import { RouterOutlet } from '@angular/router';
 import { Subscription } from 'rxjs';
 import { FormBuilder, FormGroup, UntypedFormBuilder, UntypedFormGroup, Validators} from '@angular/forms';
-import { PoDividerModule, PoModule, PoTableColumn, PoTableModule, PoButtonModule, PoMenuItem, PoMenuModule, PoModalModule, PoPageModule, PoToolbarModule, PoTableAction,} from '@po-ui/ng-components';
+import { PoDividerModule, PoModule, PoTableColumn, PoTableModule, PoButtonModule, PoMenuItem, PoMenuModule, PoModalModule, PoPageModule, PoToolbarModule, PoTableAction, PoTableComponent,} from '@po-ui/ng-components';
 import { ServerTotvsService } from './services/server-totvs.service';
 
 
@@ -28,12 +28,18 @@ import { ServerTotvsService } from './services/server-totvs.service';
   styleUrls: ['./app.component.css'],
 })
 export class AppComponent {
+
+  @ViewChild('poTable') poTable!: PoTableComponent;
+  
   private srvTotvs = inject(ServerTotvsService);
   private formBuilder = inject(FormBuilder);
   readonly menus: Array<PoMenuItem> = [
     { label: 'ConsultaBRR', action: this.onClick.bind(this) },
   ];
 
+  // Referência para o componente PO-Table
+  
+  
   //Variaveis 
   loadTela: boolean = false
   tituloTela!:string

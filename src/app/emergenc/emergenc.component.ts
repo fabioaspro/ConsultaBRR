@@ -15,7 +15,7 @@ import { escape } from 'querystring';
   standalone: true,
   imports: [
     CommonModule,
-    RouterOutlet,
+    
     ReactiveFormsModule,
     FormsModule,
     PoModalModule,

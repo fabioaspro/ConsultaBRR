@@ -30,6 +30,7 @@
           }
 
           <po-button p-tooltip="Efetuar Busca de Prioridade" name='btBusca' [p-disabled]="lBotao" style="margin-right: 50px" p-icon="po-icon po-icon-search" p-kind="primary"  p-label="Buscar" (p-click)="ChamaObterBRR()"></po-button>
+          <po-button  (p-click)="selecionarLinha(1)">Selecionar Maria</po-button >
         </div>
       </form>
   </div>
@@ -52,9 +53,12 @@
               [p-hide-columns-manager]="true" 
               p-container="true"
               [p-literals]="customLiterals"
-              [p-height]="alturaGrid"/>
+              [p-height]="alturaGrid"
+              [p-selectable]="true"/>
     <p style="font-size: 10px" >versão 1.00.001</p>
 </div>
+
+
 
 <!--FAS
 <div class="campofiltros">
