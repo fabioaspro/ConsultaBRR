@@ -155,7 +155,6 @@ export class  ListComponent {
     this.loadTela = true;
     this.desabilitaForm()
     let paramsTela: any = { items: this.form.value }
-    console.log(paramsTela)
     this.lista = []
 
      
