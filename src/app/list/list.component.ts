@@ -146,7 +146,7 @@ export class  ListComponent {
         this.poTable.selectRowItem(item); // Seleciona o item na tabela
       }
       else {
-        alert ("error")
+        alert ("error.")
       }
     }
     
