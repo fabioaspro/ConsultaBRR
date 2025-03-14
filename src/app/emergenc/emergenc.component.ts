@@ -148,7 +148,7 @@ export class EmergencComponent {
   }
 
   ChamaObterEmergencial(){
-    this.labelLoadTela = "Carregando Emergenciais"
+    this.labelLoadTela = "Carregando Emergenciais."
     this.loadTela = true;
     this.desabilitaForm()
     let paramsTela: any = { items: this.form.value }
