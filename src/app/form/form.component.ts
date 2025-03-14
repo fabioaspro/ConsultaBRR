@@ -97,7 +97,7 @@ export class FormComponent {
     //Carregar combo de estabelecimentos
     this.srvTotvs.ObterEstabelecimentos().subscribe({
       next: (response: any) => {
-        console.log(response)
+        
         this.listaEstabelecimentos = (response as any[]).sort(
           this.srvTotvs.ordenarCampos(['label']))
       },
