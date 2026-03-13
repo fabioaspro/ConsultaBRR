@@ -40,8 +40,6 @@ export class  ListComponent {
   private srvDialog = inject(PoDialogService);
   private router = inject(Router)
   private formConsulta = inject(FormBuilder);
-
-  
   
   //Variaveis 
   labelLoadTela:string = ''
